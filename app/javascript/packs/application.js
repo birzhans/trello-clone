@@ -12,15 +12,17 @@ require("local-time").start()
 window.Rails = Rails
 
 import 'bootstrap'
+import Vue from 'vue/dist/vue.esm'
+import App from '../app.vue'
 
 document.addEventListener("turbolinks:load", () => {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-
-  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl)
-  })
+  var element = document.querySelector("#boards")
+  if (element != undefined) {
+    const app = new Vue({
+      el: element,
+      data: { lists: JSON.parse(element.dataset.lists) },
+      template: "<App :original_lists='lists' />",
+      components: { App }
+    })
+  }
 })
