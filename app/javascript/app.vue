@@ -1,6 +1,13 @@
 <template>
    <draggable :list="lists" group="lists" class="board dragArea" @end="listMoved">
     <List v-for="list in original_lists" :key="list.id" :list="list" />
+
+    <a v-if="!editing" @click="toggleEditing" class="btn btn-secondary m-2">Add a List</a>
+		<div class="m-1 list" v-if="editing">
+			<input type="text" ref="message" placeholder="type..." v-model="message" class="form-control mb-1">
+			<button @click="createList" class="btn btn-secondary">Save</button>
+      <a v-if="editing" @click="toggleEditing" class="btn m-2">Cancel</a>
+		</div>
   </draggable>
 </template>
 
@@ -13,8 +20,9 @@ export default {
   props: ['original_lists'],
   data() {
     return {
-      messages: { 0: 'wefew' },
-      lists: this.original_lists
+      lists: this.original_lists,
+      editing: false,
+      message: ""
     }
   },
 
@@ -30,28 +38,24 @@ export default {
         dataType: 'json'
       })
     },
+    toggleEditing() {
+      this.editing = !this.editing
+    },
 
-    cardMoved(event) {
-      const evt = event.added || event.moved
-      if (evt == undefined) return
-
-      const element = evt.element
-
-      const list_index = this.lists.findIndex((list) => {
-        return list.cards.find((card) => {
-          return card.id === element.id
-        })
-      })
-
+    createList() {
       var data = new FormData
-      data.append('card[list_id]', this.lists[list_index].id)
-      data.append('card[position]', evt.newIndex + 1)
+      data.append('list[name', this.message)
 
       Rails.ajax({
-        url: `cards/${element.id}/move`,
-        type: 'PATCH',
+        url: 'lists',
+        type: 'POST',
         data: data,
-        dataType: 'json'
+        dataType: 'json',
+        success: (data) => {
+          window.store.lists.push(data)
+          this.message = ""
+          this.editing = false
+        }
       })
     }
   },

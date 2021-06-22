@@ -3,24 +3,24 @@
 		<h4 class="m-2">{{ list.name }}</h4>
 
 		<draggable v-model="list.cards" group="cards" class="dragArea" @change="cardMoved">
-			<div v-for="card in list.cards" :key="card.id" class="card card-body m-1">
-				{{ card.name }}
-			</div>
+			<Card v-for="card in list.cards" :key="card.id" :card="card" :list="list" />
 		</draggable>
 
-		<a @click="toggleEditing" class="btn btn-secondary m-2">{{ editingMessage }}</a>
+		<a v-if="!editing" @click="toggleEditing" class="btn btn-secondary m-2">Add card</a>
 		<div class="m-1" v-if="editing">
 			<input type="text" ref="message" placeholder="type..." v-model="message" class="form-control mb-1">
-			<button @click="createList" class="btn btn-secondary">Save</button>
+			<button @click="createCard" class="btn btn-secondary">Save</button>
+			<a v-if="editing" @click="toggleEditing" class="btn m-2">Cancel</a>
 		</div>
 	</div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import Card from './Card'
 
 export default {
-	components: { draggable },
+	components: { draggable, Card },
 	props: ["list"],
 
 	data() {
@@ -43,7 +43,7 @@ export default {
 			}
 		},
 
-		createList() {
+		createCard() {
       var data = new FormData
       data.append('card[list_id]', this.list.id)
       data.append('card[name', this.message)
@@ -90,13 +90,4 @@ export default {
 </script>
 
 <style scoped>
-.list {
-  background: #e2e4e6;
-  border-radius: 3px;
-  width: 270px;
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px;
-  padding: 10px;
-}
 </style>
