@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_071822) do
   create_table "cards", force: :cascade do |t|
     t.bigint "list_id", null: false
     t.string "name", null: false
-    t.integer "position", null: false
+    t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["list_id"], name: "index_cards_on_list_id"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_071822) do
 
   create_table "lists", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "position", null: false
+    t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

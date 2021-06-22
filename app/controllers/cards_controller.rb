@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_card, only: %i[ show edit update destroy move]
 
   def index
     @cards = Card.all
@@ -42,6 +42,11 @@ class CardsController < ApplicationController
     respond_to do |format|
       format.json { head :no_content }
     end
+  end
+
+  def move
+  @card.update(card_params)
+    render action: :show
   end
 
   private

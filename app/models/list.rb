@@ -2,7 +2,6 @@ class List < ApplicationRecord
   has_many :cards, -> { order(position: :asc) }, dependent: :destroy
 
   validates :name, presence: true
-  validates :position, presence: true
   scope :sorted, -> { order(position: :asc) }
 
   acts_as_list
