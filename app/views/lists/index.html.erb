@@ -1,13 +1,4 @@
-<div class="row">
-  <div class="col-sm-6">
-    <h1>Lists</h1>
-  </div>
-
-  <div class="col-sm-6 text-right">
-  <%= link_to new_list_path, class: 'btn btn-primary' do %>
-    Add New List
-  <% end %>
-  </div>
-</div><hr>
+<%= link_to 'Add New List', new_list_path, class: 'btn btn-primary' %>
+<hr>
 
 <%= tag.div id: :boards, data: { lists: @lists.to_json(include: :cards) } %>

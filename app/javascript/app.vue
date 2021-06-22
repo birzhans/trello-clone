@@ -1,7 +1,7 @@
 <template>
-   <draggable :list="lists" group="lists" class="row dragArea" @end="listMoved">
-    <div v-for="list in original_lists" :key="list.id" class="col-3">
-      <h4>{{ list.name }}</h4><hr>
+   <draggable :list="lists" group="lists" class="board dragArea" @end="listMoved">
+    <div v-for="list in original_lists" :key="list.id" class="list m-2">
+      <h4 class="m-2">{{ list.name }}</h4>
 
       <draggable v-model="list.cards" group="cards" class="dragArea" @change="cardMoved">
         <div v-for="card in list.cards" :key="card.id" class="card card-body m-1">
@@ -9,9 +9,9 @@
         </div>
       </draggable>
 
-      <div class="card card-body">
-        <textarea v-model="messages[list.id]" class="form-control"></textarea>
-        <button @click="submitMessages(list.id)" class="btn btn-secondary mt-2">Save</button>
+      <div class="m-1">
+        <input type="text" placeholder="type..." v-model="messages[list.id]" class="form-control mb-1">
+      <button @click="submitMessages(list.id)" class="btn btn-secondary">Save</button>
       </div>
     </div>
   </draggable>
@@ -99,5 +99,21 @@ p {
 
 .dragArea {
   min-height: 20px;
+}
+
+.board {
+  white-space: nowrap;
+  overflow-x: auto;
+
+}
+
+.list {
+  background: #e2e4e6;
+  border-radius: 3px;
+  width: 270px;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 10px;
+  padding: 10px;
 }
 </style>
