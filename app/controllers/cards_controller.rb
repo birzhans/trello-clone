@@ -20,6 +20,7 @@ class CardsController < ApplicationController
 
     respond_to do |format|
       if @card.save
+        ActionCable.server.broadcast "board", { commit: 'addCard', payload: render_to_string(:show, formats: [:json]) }
         format.json { render :show, status: :created, location: @card }
       else
         format.json { render json: @card.errors, status: :unprocessable_entity }
@@ -30,6 +31,7 @@ class CardsController < ApplicationController
   def update
     respond_to do |format|
       if @card.update(card_params)
+        ActionCable.server.broadcast "board", { commit: 'editCard', payload: render_to_string(:show, formats: [:json]) }
         format.json { render :show, status: :ok, location: @card }
       else
         format.json { render json: @card.errors, status: :unprocessable_entity }

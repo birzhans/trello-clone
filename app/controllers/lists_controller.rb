@@ -20,6 +20,7 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.save
+        ActionCable.server.broadcast "board", { commit: 'addList', payload: render_to_string(:show, formats: [:json]) }
         format.json { render :show, status: :created, location: @list }
       else
         format.json { render json: @list.errors, status: :unprocessable_entity }
