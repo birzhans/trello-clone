@@ -10,7 +10,7 @@
 		<div class="m-1" v-if="editing">
 			<input type="text" ref="message" placeholder="type..." v-model="message" class="form-control mb-1">
 			<button @click="createCard" class="btn btn-secondary">Save</button>
-			<a v-if="editing" @click="toggleEditing" class="btn m-2">Cancel</a>
+			<a v-if="editing" @click="toggleEditing" class="btn 4m-2">Cancel</a>
 		</div>
 	</div>
 </template>
@@ -54,8 +54,7 @@ export default {
         data: data,
         dataType: 'json',
         success: (data) => {
-          const index = window.store.lists.findIndex(item => item.id == this.list.id)
-          window.store.lists[index].cards.push(data)
+					this.$store.commit('addCard', data)
           this.message = ""
 					this.$nextTick(() => { this.$refs.message.focus() })
         }

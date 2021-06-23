@@ -1,6 +1,6 @@
 <template>
    <draggable :list="lists" group="lists" class="board dragArea" @end="listMoved">
-    <List v-for="list in original_lists" :key="list.id" :list="list" />
+    <List v-for="list in lists" :key="list.id" :list="list" />
 
     <a v-if="!editing" @click="toggleEditing" class="btn btn-secondary m-2">Add a List</a>
 		<div class="m-1 list" v-if="editing">
@@ -17,12 +17,16 @@ import List from './components/list'
 
 export default {
   components: { draggable, List },
-  props: ['original_lists'],
   data() {
     return {
-      lists: this.original_lists,
       editing: false,
       message: ""
+    }
+  },
+
+  computed: {
+    lists() {
+      return this.$store.state.lists
     }
   },
 
@@ -52,6 +56,7 @@ export default {
         data: data,
         dataType: 'json',
         success: (data) => {
+          this.$store.commit('addList', data)
           window.store.lists.push(data)
           this.message = ""
           this.editing = false
